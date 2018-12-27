@@ -1,5 +1,11 @@
 # Laravel Message Interceptor
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/mozammil/laravel-message-interceptor.svg?style=flat-square)](https://packagist.org/packages/mozammil/laravel-message-interceptor)
+[![Build Status](https://img.shields.io/travis/com/mozammil/laravel-message-interceptor.svg?style=flat-square)](https://travis-ci.org/mozammil/laravel-message-interceptor)
+[![Quality Score](https://img.shields.io/scrutinizer/g/mozammil/laravel-message-interceptor.svg?style=flat-square)](https://scrutinizer-ci.com/g/mozammil/laravel-message-interceptor)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+
+
 This Laravel package helps to intercept e-mails and sends them to another email in a local environment. Laravel does ship with one way of [intercepting emails in a local environtment](https://laravel.com/docs/5.7/mail#mail-and-local-development).
 
 However, this packages gives you a little bit more flexibility, such as whitelisting emails and domains in a local environment, so that your development team can still receive emails for testing purposes.
