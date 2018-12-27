@@ -8,7 +8,7 @@
 
 This Laravel package helps to intercept e-mails and sends them to another email (or emails) in a local environment.
 
-Laravel ships with one way of [intercepting emails in a local environtment](https://laravel.com/docs/5.7/mail#mail-and-local-development). However, this packages gives you a little bit more flexibility, such as whitelisting emails and domains in a local environment.
+Laravel ships with one way of [intercepting emails in a local environtment](https://laravel.com/docs/5.7/mail#mail-and-local-development). However, this packages gives you a little bit more flexibility, such as whitelisting emails and domains in a local environment, preserving `CC` and `BCC` recipients, etc.
 
 This hopefully helps to make the testing experience in email-centric workflows a little less painful for developers working locally.
 
