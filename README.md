@@ -11,12 +11,18 @@ You can also choose to preserve `Cc` and `Bcc` recipients if you want.
 Via Composer
 
 ``` bash
-$ composer require mozammil/laravel-message-interceptor
+$ composer require mozammil/laravel-message-interceptor --dev
 ```
 
 Because of package auto-discovery, this should automatically register your `ServiceProvider`.
 
 ## Configuration
+
+To publish the config file, you should do the following:
+
+``` bash
+$ php artisan vendor:publish
+```
 
 The config file will be copied to `config/message-interceptor.php`. It should give you an idea of what's possible with the package.
 
