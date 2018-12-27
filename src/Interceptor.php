@@ -38,9 +38,9 @@ class Interceptor
     }
 
     /**
-     * Gets a list of whitelisted recipient
+     * Gets a list of whitelisted recipients
      *
-     * @param array $recipients
+     * @param \Swift_Message $message
      *
      * @return array
      */
