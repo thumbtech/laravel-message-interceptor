@@ -48,15 +48,15 @@ return [
      * Whitelisted email recipients.
      */
     'whitelist' => [
-    /**
-     * Emails sent to the emails specified
-     * below will not be intercepted.
-     */
+        /**
+         * Email addresses in the list below will
+         * not be filtered out
+         */
         'emails' => [],
 
         /**
-         * Emails sent to the domains specified
-         * below will not be intercepted.
+         * Email address matching the domain in
+         * the list below will not be filtered out
          */
         'domains' => []
     ]

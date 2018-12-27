@@ -83,15 +83,15 @@ return [
      * Whitelisted email recipients.
      */
     'whitelist' => [
-    /**
-     * Emails sent to the emails specified
-     * below will not be intercepted.
-     */
+        /**
+         * Email addresses in the list below will
+         * not be filtered out
+         */
         'emails' => [],
 
         /**
-         * Emails sent to the domains specified
-         * below will not be intercepted.
+         * Email address matching the domain in
+         * the list below will not be filtered out
          */
         'domains' => []
     ]
@@ -99,18 +99,16 @@ return [
 
 ```
 
-For the package to work appropriately, it is fundamental that the following is configured in your `.env` file.
+For the package to work appropriately, it is fundamental that the following is configured in your `.env` file. By default, no emails will be intercepted.
 
 ```
 MESSAGE_INTERCEPTOR_ADDRESS=hello@example.com
-MESSAGE_INTERCEPTOR_ENABLED=true # You would want to enable this locally only :)
+MESSAGE_INTERCEPTOR_ENABLED=true
 ```
 
 ## Additional Information
 
-Whenever an e-mail is intercepted, a `Mozammil\LaravelMessageInterceptor\Events\MessageIntercepted::class` event is also dispatched.
-
-You could then retrieve the original underlying `Swift_Message` from the event.
+Whenever an e-mail is intercepted, a `Mozammil\LaravelMessageInterceptor\Events\MessageIntercepted::class` event is also dispatched. You could then retrieve the original underlying `Swift_Message` from the event.
 
 ## Change log
 
