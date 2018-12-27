@@ -3,6 +3,7 @@
 namespace Mozammil\LaravelMessageInterceptor;
 
 use Swift_Message;
+use InvalidArgumentException;
 use Illuminate\Support\Collection;
 use Mozammil\LaravelMessageInterceptor\Events\MessageIntercepted;
 
@@ -45,18 +46,14 @@ class Interceptor
      */
     public function getFilteredRecipients(Swift_Message $message)
     {
-        $recipients = $message->getTo();
+        $to = [config('message-interceptor.to.address') => config('message-interceptor.to.name')];
 
-        $whitelisted = collect($recipients)
+        return collect($message->getTo())
             ->filter(function ($name, $email) {
                 return $this->isRecipientWhitelisted($email);
-            });
-
-        $to = collect([
-            config('message-interceptor.to.address', null) => config('message-interceptor.to.name', null)
-        ]);
-
-        return $whitelisted->merge($to)->toArray();
+            })
+            ->merge(collect($to))
+            ->toArray();
     }
 
     /**
@@ -68,11 +65,14 @@ class Interceptor
      */
     public function getFilteredCcRecipients(Swift_Message $message)
     {
-        $recipients = config('message-interceptor.preserveCc', false) ? $message->getCc() : [];
+        $preserveCc = config('message-interceptor.preserveCc', false);
 
-        $moreCc = collect(config('message-interceptor.cc', false))->mapWithKeys(function ($email) {
-            return [$email => null];
-        });
+        $recipients = $preserveCc ? $message->getCc() : [];
+
+        $moreCc = collect(config('message-interceptor.cc', []))
+            ->mapWithKeys(function ($email) {
+                return [$email => null];
+            });
 
         return collect($recipients)->merge($moreCc)->toArray();
     }
@@ -86,11 +86,14 @@ class Interceptor
      */
     public function getFilteredBccRecipients(Swift_Message $message)
     {
-        $recipients = config('message-interceptor.preserveBcc', false) ? $message->getBcc() : [];
+        $preserveBcc = config('message-interceptor.preserveBcc', false);
 
-        $moreBcc = collect(config('message-interceptor.bcc', false))->mapWithKeys(function ($email) {
-            return [$email => null];
-        });
+        $recipients = $preserveBcc ? $message->getBcc() : [];
+
+        $moreBcc = collect(config('message-interceptor.bcc', []))
+            ->mapWithKeys(function ($email) {
+                return [$email => null];
+            });
 
         return collect($recipients)->merge($moreBcc)->toArray();
     }
@@ -123,7 +126,7 @@ class Interceptor
     private function getDomain(string $email)
     {
         if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new Exception("Invalid Email: {$email}");
+            throw new InvalidArgumentException("Invalid email supplied: {$email}");
         }
 
         return last(explode('@', $email));
