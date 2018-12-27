@@ -1,0 +1,43 @@
+{
+    "name": "mozammil/laravel-message-interceptor",
+    "description": "A Laravel package to intercept emails. Particularly useful in development environments",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mozammil Khodabacchas",
+            "email": "hello@moz.im"
+        }
+    ],
+    "require": {
+        "php": "^7.0",
+        "laravel/framework": "~5.5.0|~5.6.0|~5.7.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.2",
+        "orchestra/testbench": "~3.0",
+        "phpunit/phpunit": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mozammil\\LaravelMessageInterceptor\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mozammil\\LaravelMessageInterceptor\\Test\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mozammil\\LaravelMessageInterceptor\\ServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
