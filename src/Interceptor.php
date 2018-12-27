@@ -14,7 +14,7 @@ class Interceptor
      *
      * @param \Swift_Message $message
      *
-     * @return void
+     * @return \Swift_Message
      */
     public function intercept(Swift_Message $message)
     {
@@ -42,7 +42,7 @@ class Interceptor
      *
      * @param array $recipients
      *
-     * @return \Illuminate\Support\Collection
+     * @return array
      */
     public function getFilteredRecipients(Swift_Message $message)
     {
