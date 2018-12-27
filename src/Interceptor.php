@@ -9,75 +9,6 @@ use Mozammil\LaravelMessageInterceptor\Events\MessageIntercepted;
 class Interceptor
 {
     /**
-     * If package is enabled
-     *
-     * @var boolean
-     */
-    protected $enabled;
-
-    /**
-     * The recipient of the intercepted message.
-     * Contains the name and address
-     *
-     * @var array
-     */
-    protected $to;
-
-    /**
-     * The intercepted message will be copied (cc)
-     * to the emails specified in this array
-     *
-     * @var array
-     */
-    protected $cc;
-
-    /**
-     * The intercepted message will be copied (bcc)
-     * to the emails specified in this array
-     *
-     * @var array
-     */
-    protected $bcc;
-
-    /**
-     * If we should preserve BCCs
-     *
-     * @var boolean
-     */
-    protected $preserveCc;
-
-    /**
-     * If we should preserve CCs
-     *
-     * @var boolean
-     */
-    protected $preserveBcc;
-
-    /**
-     * The whitelisted emails
-     *
-     * @var array
-     */
-    protected $whitelistedEmails;
-
-    /**
-     * The whiteisted domains
-     *
-     * @var array
-     */
-    protected $whitelistedDomains;
-
-    /**
-     * If we should intercept the message
-     *
-     * @return bool
-     */
-    public function shouldInterceptMessage()
-    {
-        return config('message-interceptor.enabled', false);
-    }
-
-    /**
      * Interrcepts the message
      *
      * @param \Swift_Message $message
@@ -93,6 +24,16 @@ class Interceptor
         $message->setBcc($this->getFilteredBccRecipients($message));
 
         return $message;
+    }
+
+    /**
+     * If we should intercept the message
+     *
+     * @return bool
+     */
+    public function shouldInterceptMessage()
+    {
+        return config('message-interceptor.enabled', false);
     }
 
     /**
