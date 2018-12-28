@@ -56,7 +56,7 @@ class InterceptorTest extends TestCase
 
         $this->assertEquals(
             ['me@mozammil.com' => 'Mozammil'],
-            $interceptor->getFilteredRecipients($message)
+            $interceptor->getFilteredToRecipients($message)
         );
     }
 
@@ -82,7 +82,7 @@ class InterceptorTest extends TestCase
                 'hello@moz.im' => null,
                 'mozammil@outlook.com' => null,
             ],
-            $interceptor->getFilteredRecipients($message)
+            $interceptor->getFilteredToRecipients($message)
         );
     }
 
@@ -108,7 +108,7 @@ class InterceptorTest extends TestCase
                 'hello@moz.im' => null,
                 'm@moz.im' => null
             ],
-            $interceptor->getFilteredRecipients($message)
+            $interceptor->getFilteredToRecipients($message)
         );
     }
 
@@ -139,7 +139,7 @@ class InterceptorTest extends TestCase
                 'mozammil@outlook.com' => null,
                 'mozammil.kho@gmail.com' => null
             ],
-            $interceptor->getFilteredCcRecipients($message)
+            $interceptor->getFilteredCopiedRecipients($message, 'cc')
         );
     }
 
@@ -165,7 +165,7 @@ class InterceptorTest extends TestCase
 
         $this->assertEquals(
             ['mozammil.kho@gmail.com' => null],
-            $interceptor->getFilteredCcRecipients($message)
+            $interceptor->getFilteredCopiedRecipients($message, 'cc')
         );
     }
 
@@ -196,7 +196,7 @@ class InterceptorTest extends TestCase
                 'mozammil@outlook.com' => null,
                 'mozammil.kho@gmail.com' => null
             ],
-            $interceptor->getFilteredBccRecipients($message)
+            $interceptor->getFilteredCopiedRecipients($message, 'bcc')
         );
     }
 
@@ -222,7 +222,7 @@ class InterceptorTest extends TestCase
 
         $this->assertEquals(
             ['mozammil.kho@gmail.com' => null],
-            $interceptor->getFilteredBccRecipients($message)
+            $interceptor->getFilteredCopiedRecipients($message, 'bcc')
         );
     }
 

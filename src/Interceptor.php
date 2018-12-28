@@ -16,13 +16,13 @@ class Interceptor
      *
      * @return \Swift_Message
      */
-    public function intercept(Swift_Message $message)
+    public function intercept(Swift_Message $message): Swift_Message
     {
         event(new MessageIntercepted($message));
 
-        $message->setTo($this->getFilteredRecipients($message));
-        $message->setCc($this->getFilteredCcRecipients($message));
-        $message->setBcc($this->getFilteredBccRecipients($message));
+        $message->setTo($this->getFilteredToRecipients($message));
+        $message->setCc($this->getFilteredCopiedRecipients($message, 'cc'));
+        $message->setBcc($this->getFilteredCopiedRecipients($message, 'bcc'));
 
         return $message;
     }
@@ -32,7 +32,7 @@ class Interceptor
      *
      * @return bool
      */
-    public function shouldInterceptMessage()
+    public function shouldInterceptMessage(): bool
     {
         return config('message-interceptor.enabled', false);
     }
@@ -44,7 +44,7 @@ class Interceptor
      *
      * @return array
      */
-    public function getFilteredRecipients(Swift_Message $message)
+    public function getFilteredToRecipients(Swift_Message $message): array
     {
         $to = [config('message-interceptor.to.address') => config('message-interceptor.to.name')];
 
@@ -57,45 +57,25 @@ class Interceptor
     }
 
     /**
-     * Retrieves CC recipients
+     * Retrieves CC or BCC recipients
      *
      * @param \Swift_Message $message
      *
      * @return array
      */
-    public function getFilteredCcRecipients(Swift_Message $message)
+    public function getFilteredCopiedRecipients(Swift_Message $message, string $type): array
     {
-        $preserveCc = config('message-interceptor.preserveCc', false);
+        $preserve = config('message-interceptor.preserve' . ucfirst($type), false);
 
-        $recipients = $preserveCc ? $message->getCc() : [];
+        $method = 'get' . ucfirst($type);
+        $recipients = $preserve ? $message->{$method}() : [];
 
-        $moreCc = collect(config('message-interceptor.cc', []))
+        $more = collect(config('message-interceptor.' . strtolower($type), []))
             ->mapWithKeys(function ($email) {
                 return [$email => null];
             });
 
-        return collect($recipients)->merge($moreCc)->toArray();
-    }
-
-    /**
-     * Retrieves BCC recipients
-     *
-     * @param \Swift_Message $message
-     *
-     * @return array
-     */
-    public function getFilteredBccRecipients(Swift_Message $message)
-    {
-        $preserveBcc = config('message-interceptor.preserveBcc', false);
-
-        $recipients = $preserveBcc ? $message->getBcc() : [];
-
-        $moreBcc = collect(config('message-interceptor.bcc', []))
-            ->mapWithKeys(function ($email) {
-                return [$email => null];
-            });
-
-        return collect($recipients)->merge($moreBcc)->toArray();
+        return collect($recipients)->merge($more)->toArray();
     }
 
     /**
@@ -105,7 +85,7 @@ class Interceptor
      *
      * @return boolean
      */
-    public function isRecipientWhitelisted(string $email)
+    public function isRecipientWhitelisted(string $email): bool
     {
         $whitelistedEmails  = config('message-interceptor.whitelist.emails', []);
         $whitelistedDomains = config('message-interceptor.whitelist.domains', []);
@@ -123,7 +103,7 @@ class Interceptor
      *
      * @return string
      */
-    private function getDomain(string $email)
+    private function getDomain(string $email): string
     {
         if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new InvalidArgumentException("Invalid email supplied: {$email}");
